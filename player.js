@@ -1,4 +1,4 @@
-function Player() {
+function Player(img) {
 
     this.health = 100;
     this.happiness = 100;
@@ -10,7 +10,11 @@ function Player() {
 
     this.width = 55;
     this.height = 55;
+    this.moveRight = true;
 
+    this.img = img;
+    this.x = width / 2;
+    this.y = height - 200;
 
     this.reduceHealth = function (cancer) {
         if (cancer) {
@@ -50,9 +54,27 @@ function Player() {
 
     }
 
-    this.draw = function () {
-        fill(255, 255, 255, 255);
-        ellipse(height / 2, width / 2, this.height, this.width, 20);
+    this.draw = function (img) {
+        image(img, this.x, this.y, img.height / 8, img.width / 8);
+        this.move();
 
     };
+
+    this.move = function () {
+        if (frameCount % 20 == 0 && this.moveRight == true) {
+            this.x += 5;
+            if (this.x >= 670) {
+                this.moveRight = false;
+            }
+
+        } else if (frameCount % 20 == 0 && this.moveRight == false) {
+            this.x -= 5;
+            console.log(this.x);
+            if (this.x <= 420) {
+                this.moveRight = true;
+            }
+        }
+    }
+
+
 }

@@ -1,37 +1,42 @@
-var player;
+var player, picture;
 var indicator;
 var toiletButton, healthButton, happyButton, testButton;
 var testBool = true;
+var png;
 
-function xpl() {
-    player.redusePoop(10)
-}
+
 
 function setup() {
-    var cnv = createCanvas(600, 400);
+    png = loadImage('./pictures/background/beach.png');
+    picture = loadImage('./pictures/player/penguin.png');
+    var cnv = createCanvas(880, 720);
     cnv.parent('canvasContainer');
-    background(0, 0, 0);
 
-    player = new Player();
+
+    player = new Player(picture);
     indicator = new Indicator();
 
 
     setUpToiletButton();
+    setUpHappyButton();
 
 
 }
 
 function draw() {
-    background(0, 0, 0);
-    player.draw();
-    player.update();
+    
+
 
 
     if (playerIsAlive()) {
+        image(png, 0, 0);
         indicator.update(player.health, player.happiness, player.toilet);
+        player.draw(picture);
+        player.update();
     } else {
-        fill(255, 255, 255);
-        text("Your Tama is dead!", width / 2, height / 2);
+        fill(0,0,0);
+        textSize(40);
+        text("Your Tama is dead!", width / 3, height / 3);
     }
 }
 
@@ -53,14 +58,7 @@ function setUpToiletButton() {
 
 
     toiletButton.mousePressed(function () {
-        if (testBool) {
-            toiletButton.addClass("btn btn-success");
-            testBool = false;
-        } else {
-            toiletButton.removeClass("btn btn-success");
-            testBool = true;
 
-        }
         if (player.toilet < 10) {
             player.reducePoop(player.toilet)
         } else {
@@ -70,12 +68,17 @@ function setUpToiletButton() {
     });
 }
 
-function setUpHappyButton(){
+function setUpHappyButton() {
     happyButton = createButton("Increase Happieness");
     happyButton.parent('menuButtonsContainer');
     happyButton.addClass('btn');
-    
-    happyButton.mousePressed(function(){
-        player.
+
+    happyButton.mousePressed(function () {
+        if (player.happiness > 80) {
+            player.happiness = 99;
+        } else {
+            player.increaseHappiness(20);
+        }
+
     })
 }
